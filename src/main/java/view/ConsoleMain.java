@@ -3,7 +3,11 @@ package view;
 import model.*;
 import repository.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ConsoleMain {
@@ -12,6 +16,10 @@ public class ConsoleMain {
     static RestaurantDao restaurantDao = new RestaurantHibernate();
     static ProductDao productDao = new ProductHibernate();
     static CustomerDao customerDao = new CustomerHibernate();
+    static OrderItemDao orderItemDao = new OrderItemHibernate();
+    static OrderCustomerDao orderCustomerDao = new OrderCustomerHibernate();
+
+    static List<Double> valueList = new ArrayList<>();
 
     public static void main(String[] args) {
 
@@ -39,9 +47,68 @@ public class ConsoleMain {
         final String updateCustomerPhone = "0721422555";
         updatePhoneCustomerSearched(customerToSearch,updateCustomerPhone);
         customerToSearch.displayInfoCustomer();
+
+        saveOrderCustomer();
+        displayInfoOrderCustomer();
+        displayInfoOrderItem();
     }
 
-    
+    //Display Info Order Customer
+    private  static void displayInfoOrderCustomer(){
+        System.out.println("--------------------");
+        for(OrderCustomer orderCustomer : orderCustomerDao.readAllOrderCustomer()){
+            orderCustomer.displayInfoOrderCustomer();
+        }
+
+        System.out.println("---------------------");
+    }
+
+    //Display Info Order Item
+    private static void displayInfoOrderItem(){
+        System.out.println("----------------------");
+        for(OrderItem orderItem : orderItemDao.readAllOrderItem()){
+            orderItem.displayInfoOrderItem();
+        }
+
+        System.out.println("-------------------------");
+    }
+
+
+
+
+    //Create Items
+    private static Set<OrderItem>createItem(OrderCustomer orderCustomer){
+        Set<OrderItem>orderItemSet = new HashSet<>();
+        OrderItem orderItem = new OrderItem();
+        orderItem.setProduct(productDao.findProductById(3L));
+        orderItem.setQuantity(2);
+        orderItem.setOrderCustomer(orderCustomer);
+        orderItemSet.add(orderItem);
+        valueList.add(orderItem.makeValue());
+
+        OrderItem orderItem1 = new OrderItem();
+        orderItem1.setProduct(productDao.findProductById(4L));
+        orderItem1.setQuantity(2);
+        orderItem.setOrderCustomer(orderCustomer);
+        orderItemSet.add(orderItem1);
+        valueList.add(orderItem.makeValue());
+
+        return orderItemSet;
+    }
+
+    private static void saveOrderCustomer(){
+        OrderCustomer orderCustomer = new OrderCustomer();
+        orderCustomer.setDate(LocalDate.now());
+        orderCustomer.setTime(LocalTime.now());
+        orderCustomer.setCustomer(customerDao.findCustomerById(4L));
+        orderCustomer.setRestaurant(restaurantDao.findRestaurantById(1L));
+        orderCustomer.setPayment(Payment.CARD);
+        orderCustomer.setStatus(Status.AFFECTED);
+        orderCustomer.setOrderItemSet(createItem(orderCustomer));
+
+        orderCustomerDao.createOrderCustomer(orderCustomer);
+    }
+
     //Display info customer
     private static void selectAllCustomer(){
         System.out.println("____________________________________");

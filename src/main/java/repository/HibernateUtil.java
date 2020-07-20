@@ -33,8 +33,8 @@ public class HibernateUtil {
                 configuration.addAnnotatedClass(Product.class);
                 configuration.addAnnotatedClass(Person.class);
                 configuration.addAnnotatedClass(Customer.class);
-                //configuration.addAnnotatedClass(OrderCustomer.class);
-                //configuration.addAnnotatedClass(OrderItem.class);
+                configuration.addAnnotatedClass(OrderCustomer.class);
+                configuration.addAnnotatedClass(OrderItem.class);
                 configuration.addAnnotatedClass(User.class);
                 //configuration.addAnnotatedClass(DeliveryPerson.class);
                 //configuration.addAnnotatedClass(Delivery.class);
