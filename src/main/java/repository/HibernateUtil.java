@@ -1,5 +1,6 @@
 package repository;
 
+import model.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -28,13 +29,13 @@ public class HibernateUtil {
                 settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
                 settings.put(Environment.HBM2DDL_AUTO, "create-drop");//"create-drop" "none"
                 configuration.setProperties(settings);
-                //configuration.addAnnotatedClass(Restaurant.class);
-                //configuration.addAnnotatedClass(Product.class);
-               // configuration.addAnnotatedClass(Person.class);
-                //configuration.addAnnotatedClass(Customer.class);
+                configuration.addAnnotatedClass(Restaurant.class);
+                configuration.addAnnotatedClass(Product.class);
+                configuration.addAnnotatedClass(Person.class);
+                configuration.addAnnotatedClass(Customer.class);
                 //configuration.addAnnotatedClass(OrderCustomer.class);
                 //configuration.addAnnotatedClass(OrderItem.class);
-                //configuration.addAnnotatedClass(User.class);
+                configuration.addAnnotatedClass(User.class);
                 //configuration.addAnnotatedClass(DeliveryPerson.class);
                 //configuration.addAnnotatedClass(Delivery.class);
                 //configuration.addAnnotatedClass(Invoice.class);

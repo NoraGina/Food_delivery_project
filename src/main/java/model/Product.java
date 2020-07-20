@@ -1,14 +1,37 @@
 package model;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(schema = "food_delivery", name = "product")
 public class Product {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_product")
     private Long idProduct;
+
+    @Column(name = "product_name", nullable = false)
     private String productName;
+
+    @Column(name = "description", nullable = false)
     private String description;
+
+    @Column(name = "price", nullable = false)
     private Double price;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "restaurant_id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private Restaurant restaurant;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user")
+    @NotFound(action = NotFoundAction.IGNORE)
     private User user;
 
     public Product() {
@@ -67,12 +90,16 @@ public class Product {
         if (this == o) return true;
         if (!(o instanceof Product)) return false;
         Product product = (Product) o;
-        return idProduct.equals(product.idProduct);
+        return idProduct.equals(product.idProduct) &&
+                productName.equals(product.productName) &&
+                description.equals(product.description) &&
+                price.equals(product.price) &&
+                restaurant.equals(product.restaurant);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idProduct);
+        return Objects.hash(idProduct, productName, description, price, restaurant);
     }
 
     @Override

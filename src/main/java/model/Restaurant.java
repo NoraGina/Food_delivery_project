@@ -1,15 +1,36 @@
 package model;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
+import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
 
+@Entity
+@Table(schema = "food_delivery", name="restaurant")
 public class Restaurant {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_restaurant")
     private Long idRestaurant;
+
+    @Column(name = "restaurant_name", nullable = false)
     private String restaurantName;
+
+    @Column(name = "restaurant_email", nullable = false)
     private String restaurantEmail;
+
+    @Column(name = "restaurant_phone", nullable = false)
     private String restaurantPhone;
+
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Product>productSet;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private User user;
 
     public Restaurant() {
@@ -62,6 +83,8 @@ public class Restaurant {
     public void setUser(User user) {
         this.user = user;
     }
+
+
 
     @Override
     public boolean equals(Object o) {
