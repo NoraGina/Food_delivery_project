@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane id="goBtn" prefHeight="314.0" prefWidth="465.0"
+      style="-fx-background-color: #d8ede0; -fx-border-color: #99a39d; -fx-border-radius: 20; -fx-border-width: 5;"
+      xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="view.ProviderMainController">
+
+    <Button layoutX="100.0" layoutY="100.0" mnemonicParsing="false" onAction="#showLoginProvider" prefHeight="100.0"
+            prefWidth="263.0"
+            style="-fx-background-color: #adc4c9; -fx-border-color: #a4b6ba; -fx-border-radius: 10; -fx-border-width: 3; -fx-text-fill: #d43141; -fx-font-family: Serif; -fx-font-size: 30; -fx-font-weight: bold; -fx-background-insets: 20, 40, 60, 80; -fx-background-radius: 100;"
+            text="WELCOME" BorderPane.alignment="CENTER">
+        <font>
+            <Font name="SimSun-ExtB" size="30.0"/>
+        </font>
+        <effect>
+     <InnerShadow choke="0.48" color="#4599a8" radius="23.3425" width="74.37"/>
+        </effect>
+    </Button>
+</Pane>

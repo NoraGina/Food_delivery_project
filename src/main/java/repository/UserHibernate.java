@@ -1,5 +1,6 @@
 package repository;
 
+import model.Department;
 import model.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -89,6 +90,91 @@ public class UserHibernate implements UserDao {
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
             Query query= session. createQuery("from User where first_name=:firstName and last_name=:lastName");
+            query.setParameter("firstName", firstName);
+            query.setParameter("lastName", lastName);
+            User user = (User) query.uniqueResult();
+            session.close();
+            return user;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public Long isUserExist(String userName, String password) {
+        try{
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            Query query = session.createQuery("Select COUNT(u) " +
+                    "from User u where u.userName=:userName and u.password=:password ");
+            query.setParameter("userName", userName);
+            query.setParameter("password", password);
+            Long result = (Long) query.getSingleResult();
+            session.close();
+            return result;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Long isAdministratorExist(String userName, String password, Department department) {
+
+        try {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            Query query = session.createQuery("Select COUNT(u) from User u " +
+                    "where u.userName=:userName and u.password=:password and u.department=:department");
+            query.setParameter("userName", userName);
+            query.setParameter("password", password);
+            query.setParameter("department", department);
+            Long result = (Long)query.getSingleResult();
+            session.close();
+            return result;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Long isUserNameExist(String userName) {
+        try{
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            Query<Long>query = session.createQuery("Select Count(u) from User u where u.userName=:userName");
+            query.setParameter("userName", userName);
+            Long result =  query.getSingleResult();
+            session.close();
+            return result;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public User findByUserNameAndPassword(String userName, String password) {
+        try {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            Query query= session. createQuery("from User where userName=:userName and password=:password");
+            query.setParameter("userName", userName);
+            query.setParameter("password", password);
+            User user = (User) query.uniqueResult();
+            session.close();
+            return user;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public User findUserByFirstAndLastName(String firstName, String lastName) {
+        try {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            Query query= session. createQuery("from User where firstName=:firstName and lastName=:lastName");
             query.setParameter("firstName", firstName);
             query.setParameter("lastName", lastName);
             User user = (User) query.uniqueResult();

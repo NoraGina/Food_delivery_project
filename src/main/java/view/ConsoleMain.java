@@ -251,16 +251,18 @@ public class ConsoleMain {
         User user = new User();
         user.setFirstName("George ");
         user.setLastName("Crisan");
+        user.setUserName("George");
         user.setDepartment(Department.ADMINISTRATOR);
         user.setPhone("0721654789");
         user.setEmail("crisan.gmail");
-        user.setUserPassword("1234");
+        user.setPassword("1234");
         userDao.createUser(user);
 
         User user1 = new User();
         user1.setFirstName("Vlad");
         user1.setLastName("Mihalcea");
-        user1.setUserPassword("1234");
+        user1.setUserName("Vlad");
+        user1.setPassword("1234");
         user1.setPhone("0721321456");
         user1.setDepartment(Department.EMPLOYEE);
         user1.setEmail("mihalcea.gmail");

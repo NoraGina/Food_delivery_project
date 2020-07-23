@@ -8,8 +8,11 @@ import java.util.Set;
 @Table(name="user")
 public class User extends Person{
 
+    @Column(name = "user_name", nullable = false)
+    private String userName;
+
     @Column(name = "password", nullable = false)
-    private String userPassword;
+    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "department_type", length = 13)
@@ -24,12 +27,20 @@ public class User extends Person{
     public User() {
     }
 
-    public String getUserPassword() {
-        return userPassword;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Department getDepartment() {
@@ -62,19 +73,23 @@ public class User extends Person{
         if (!(o instanceof User)) return false;
         if (!super.equals(o)) return false;
         User user = (User) o;
-        return userPassword.equals(user.userPassword);
+        return userName.equals(user.userName) &&
+                password.equals(user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), userPassword);
+        return Objects.hash(super.hashCode(), userName, password);
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "userPassword='" + userPassword + '\'' +
+                "userName='" + userName + '\'' +
+                ", userPassword='" + password + '\'' +
                 ", department=" + department +
+                ", productSet=" + productSet +
+                ", restaurantSet=" + restaurantSet +
                 "} " + super.toString();
     }
 
@@ -82,7 +97,8 @@ public class User extends Person{
         System.out.println("Id:" + getId());
         System.out.println("First name:" + getFirstName());
         System.out.println("Last name: "+ getLastName());
-        System.out.println("Password:" + userPassword);
+        System.out.println("User name: "+userName);
+        System.out.println("Password:" + password);
         System.out.println("Department:" + department);
         System.out.println("Phone: " + getPhone());
         System.out.println("Email :"+ getEmail());

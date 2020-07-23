@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane prefHeight="291.0" prefWidth="600.0" style="-fx-background-color: #87b37d; -fx-border-color: #c6d6c3; -fx-border-width: 5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ProviderHomeController">
+   <children>
+      <Button layoutX="55.0" layoutY="82.0" mnemonicParsing="false" onAction="#showRestaurantProduct" prefHeight="91.0" prefWidth="210.0" style="-fx-background-radius: 100; -fx-alignment: center-right;" text="Restaurant">
+         <font>
+            <Font name="System Bold Italic" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow choke="0.35" color="#55805e" height="59.55" radius="36.6875" width="89.2" />
+         </effect>
+      </Button>
+      <ImageView fitHeight="91.0" fitWidth="169.0" layoutX="57.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/Restaurant-icon.png" />
+         </image>
+      </ImageView>
+      <Button layoutX="321.0" layoutY="76.0" mnemonicParsing="false" onAction="#showStatistics" prefHeight="93.0" prefWidth="210.0" style="-fx-background-radius: 100; -fx-alignment: center-right;" text="Statistics">
+         <effect>
+            <InnerShadow choke="0.35" color="#55805e" height="59.55" radius="36.6875" width="89.2" />
+         </effect>
+         <font>
+            <Font name="System Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="91.0" fitWidth="112.0" layoutX="321.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/statistics.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="userNameLbl" layoutX="27.0" layoutY="21.0" text="Label" />
+   </children>
+</Pane>
