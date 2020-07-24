@@ -103,6 +103,22 @@ public class UserHibernate implements UserDao {
     }
 
     @Override
+    public User findUserByUserName(String userName) {
+        try {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            Query query= session. createQuery("from User where userName=:userName");
+            query.setParameter("userName", userName);
+            User user = (User) query.uniqueResult();
+            session.close();
+            return user;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public Long isUserExist(String userName, String password) {
         try{
             Session session = HibernateUtil.getSessionFactory().openSession();
@@ -153,37 +169,5 @@ public class UserHibernate implements UserDao {
         return null;
     }
 
-    @Override
-    public User findByUserNameAndPassword(String userName, String password) {
-        try {
-            Session session = HibernateUtil.getSessionFactory().openSession();
-            Query query= session. createQuery("from User where userName=:userName and password=:password");
-            query.setParameter("userName", userName);
-            query.setParameter("password", password);
-            User user = (User) query.uniqueResult();
-            session.close();
-            return user;
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override
-    public User findUserByFirstAndLastName(String firstName, String lastName) {
-        try {
-            Session session = HibernateUtil.getSessionFactory().openSession();
-            Query query= session. createQuery("from User where firstName=:firstName and lastName=:lastName");
-            query.setParameter("firstName", firstName);
-            query.setParameter("lastName", lastName);
-            User user = (User) query.uniqueResult();
-            session.close();
-            return user;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }

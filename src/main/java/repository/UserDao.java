@@ -15,6 +15,5 @@ public interface UserDao {
     Long isUserExist(String userName, String password);
     Long isAdministratorExist(String userName, String password, Department department);
     Long isUserNameExist(String userName);
-    User findByUserNameAndPassword(String userName, String password);
-    User findUserByFirstAndLastName(String firstName, String lastName);
+    User findUserByUserName(String userName);
 }

@@ -3,8 +3,10 @@ package repository;
 import model.Product;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ProductHibernate implements ProductDao {
@@ -49,6 +51,38 @@ public class ProductHibernate implements ProductDao {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public Product findProductByNameAndRestaurant(String productName, Long idRestaurant) {
+        try{
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            Query query = session.createQuery(" from Product where productName=:productName and restaurant.idRestaurant=:idRestaurant");
+            query.setParameter("productName", productName);
+            query.setParameter("idRestaurant", idRestaurant);
+            Product product = (Product) query.uniqueResult();
+            session.close();
+            return product;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<String> findAllProductsByIdRestaurant(Long restaurantId) {
+        try{
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("select productName from Product where restaurant_id=:restaurantId");
+            query.setParameter("restaurantId", restaurantId);
+            List<String> productsName = query.getResultList();
+            session.close();
+            return productsName;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

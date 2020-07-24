@@ -28,18 +28,39 @@ public class ProviderHomeController implements Initializable {
         userNameLbl.setText(userName);
     }
 
-
     @FXML
-    private void showRestaurantProduct(Event event){
+    private void showRestaurantProduct(Event event) {
+
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(new URL("file:C:\\Users\\Gina\\IdeaProjects\\" +
+                    "Food_Delivery_Application_Hub\\src\\main\\java\\view\\RestaurantProduct.fxml"));
+            Parent loginParent = loader.load();
+
+            RestaurantProductController restaurantProductController = loader.getController();
+            restaurantProductController.getUserNameFromLoginForRestaurantProduct(userNameLbl.getText());
+
+            Scene scene = new Scene(loginParent);
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+
+            window.setScene(scene);
+            window.centerOnScreen();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+        @FXML
+        private void showStatistics(Event event){
 
             try{
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(new URL("file:C:\\Users\\Gina\\IdeaProjects\\" +
-                        "Food_Delivery_Application_Hub\\src\\main\\java\\view\\RestaurantProduct.fxml"));
+                        "Food_Delivery_Application_Hub\\src\\main\\java\\view\\Statistics.fxml"));
                 Parent loginParent = loader.load();
 
-                RestaurantProductController restaurantProductController = loader.getController();
-                restaurantProductController.getUserNameFromLoginForRestaurantProduct(userNameLbl.getText());
+                StatisticsController statisticController = loader.getController();
+                statisticController.getUserNameFromLoginForStatistics(userNameLbl.getText());
 
                 Scene scene = new Scene(loginParent);
                 Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -51,30 +72,7 @@ public class ProviderHomeController implements Initializable {
                 e.printStackTrace();
             }
 
-    }
-
-    @FXML
-    private void showStatistics(Event event){
-
-        try{
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(new URL("file:C:\\Users\\Gina\\IdeaProjects\\" +
-                    "Food_Delivery_Application_Hub\\src\\main\\java\\view\\Statistics.fxml"));
-            Parent loginParent = loader.load();
-
-            StatisticsController statisticController = loader.getController();
-            statisticController.getUserNameFromLoginForStatistics(userNameLbl.getText());
-
-            Scene scene = new Scene(loginParent);
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
-
-            window.setScene(scene);
-            window.centerOnScreen();
-        }catch(Exception e){
-            e.printStackTrace();
         }
 
-    }
 
 }

@@ -3,6 +3,7 @@ package repository;
 import model.Restaurant;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -47,6 +48,21 @@ public class RestaurantHibernate implements RestaurantDao {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public Restaurant findRestaurantByName(String restaurantName) {
+        try{
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            Query query = session.createQuery("from Restaurant where restaurantName=:restaurantName");
+            query.setParameter("restaurantName", restaurantName);
+            Restaurant restaurant = (Restaurant) query.uniqueResult();
+            session.close();
+            return restaurant;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
