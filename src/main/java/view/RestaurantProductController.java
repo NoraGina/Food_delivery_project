@@ -105,23 +105,36 @@ public class RestaurantProductController implements Initializable {
         priceTxt.setText(product.getPrice().toString());
     }
 
+
+
+    //SAVE PRODUCT
     @FXML
     private void saveProduct(){
-        Restaurant restaurant = restaurantDao.findRestaurantById(Long.parseLong(idRestaurantLbl.getText()));
-        Set<Product> productSet = new HashSet<>();
-        for(Product product : productTable.getItems()){
-            productSet.add(product);
-            restaurant.setProductSet(productSet);
-            productDao.createProduct(product);
+        if(idRestaurantLbl.getText().matches("[0-9]+.[0-9]+")){
+            Restaurant restaurant = restaurantDao.findRestaurantById(Long.parseLong(idRestaurantLbl.getText()));
+            Set<Product> productSet = new HashSet<>();
+            for(Product product : productTable.getItems()){
+                productSet.add(product);
+                restaurant.setProductSet(productSet);
+                productDao.createProduct(product);
+            }
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText("Save product");
+            alert.setContentText("Product successfully saved!");
+            alert.showAndWait();
+            clearTextFieldRestaurant();
+            clearTableProduct();
+            fillComboBoxProduct();
+        }else{
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText(null);
+            alert.setContentText("You didn't choose a restaurant");
+            alert.showAndWait();
+            restaurantCmb.requestFocus();
         }
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText("Save product");
-        alert.setContentText("Product successfully saved!");
-        alert.showAndWait();
-        clearTextFieldRestaurant();
-        clearTableProduct();
-        fillComboBoxProduct();
+
     }
 
     @FXML
@@ -152,7 +165,7 @@ public class RestaurantProductController implements Initializable {
         restaurantEmailTxt.setText(restaurant.getRestaurantEmail());
     }
 
-    //DElete Restaurant
+    //Delete Restaurant
     @FXML
     private void deleteRestaurant(){
         restaurantDao.deleteRestaurant(Long.parseLong(idRestaurantLbl.getText()));
@@ -176,6 +189,36 @@ public class RestaurantProductController implements Initializable {
         alert.showAndWait();
         clearTextFieldRestaurant();
     }
+
+    //CHECK TEXT FIELDS FOR RESTAURANT
+    private boolean validateRestaurant(){
+        StringBuilder errors = new StringBuilder();
+
+        if (restaurantNameTxt.getText().trim().isEmpty()) {
+            errors.append("- Please enter restaurant name.\n");
+            restaurantNameTxt.requestFocus();
+        }
+        if (restaurantPhoneTxt.getText().trim().isEmpty()) {
+            errors.append("- Please enter a restaurant phone.\n");
+            restaurantPhoneTxt.requestFocus();
+        }
+        if (restaurantEmailTxt.getText().trim().isEmpty()) {
+            errors.append("- Please enter restaurant email.\n");
+            restaurantEmailTxt.requestFocus();
+        }
+
+        if (errors.length() > 0) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Required Fields Empty");
+            alert.setContentText(errors.toString());
+
+            alert.showAndWait();
+            return false;
+        }
+        return true;
+    }
+
 
     //SAVE RESTAURANT
     @FXML
@@ -205,6 +248,7 @@ public class RestaurantProductController implements Initializable {
 
     //SAVE RESTAURANT WITHOUT PRODUCTS
     private void saveRestaurantWithOutProducts(){
+    if(validateRestaurant()){
         Restaurant restaurant = new Restaurant();
         restaurant.setRestaurantName(restaurantNameTxt.getText());
         restaurant.setRestaurantPhone(restaurantPhoneTxt.getText());
@@ -223,45 +267,79 @@ public class RestaurantProductController implements Initializable {
         fillComboBoxRestaurant();
     }
 
+    }
+
     //SAVING RESTAURANT WITH PRODUCTS
      private void saveRestaurantWithProducts(){
-        Restaurant restaurant = new Restaurant();
-        restaurant.setRestaurantName(restaurantNameTxt.getText());
-        restaurant.setRestaurantPhone(restaurantPhoneTxt.getText());
-        restaurant.setRestaurantEmail(restaurantEmailTxt.getText());
-        restaurant.setUser(userDao.findUserByUserName(userLbl.getText()));
-        Set<Product> productSet = new HashSet<>();
-        for(Product product : productTable.getItems()){
-            product.setRestaurant(restaurant);
-            product.setUser(userDao.findUserByUserName(userLbl.getText()));
-            productSet.add(product);
-            restaurant.setProductSet(productSet);
-        }
-        restaurantDao.createRestaurant(restaurant);
+        if(validateRestaurant()){
+            Restaurant restaurant = new Restaurant();
+            restaurant.setRestaurantName(restaurantNameTxt.getText());
+            restaurant.setRestaurantPhone(restaurantPhoneTxt.getText());
+            restaurant.setRestaurantEmail(restaurantEmailTxt.getText());
+            restaurant.setUser(userDao.findUserByUserName(userLbl.getText()));
+            Set<Product> productSet = new HashSet<>();
+            for(Product product : productTable.getItems()){
+                product.setRestaurant(restaurant);
+                product.setUser(userDao.findUserByUserName(userLbl.getText()));
+                productSet.add(product);
+                restaurant.setProductSet(productSet);
+            }
+            restaurantDao.createRestaurant(restaurant);
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText("Restaurant with products successfully saved!");
-        alert.setContentText("Restaurant with product successfully saved!");
-        alert.showAndWait();
-        clearTableProduct();
-        clearTextFieldRestaurant();
-        restaurantCmb.getItems().clear();
-        fillComboBoxRestaurant();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText("Restaurant with products successfully saved!");
+            alert.setContentText("Restaurant with product successfully saved!");
+            alert.showAndWait();
+            clearTableProduct();
+            clearTextFieldRestaurant();
+            restaurantCmb.getItems().clear();
+            fillComboBoxRestaurant();
+        }
+    }
+
+    //CHECK TEXT FIELDS FOR RESTAURANT
+    private boolean validateProduct(){
+        StringBuilder errors = new StringBuilder();
+
+        if (productNameTxt.getText().trim().isEmpty()) {
+            errors.append("- Please enter product name.\n");
+            productNameTxt.requestFocus();
+        }
+        if (descriptionTxt.getText().trim().isEmpty()) {
+            errors.append("- Please enter a description.\n");
+            descriptionTxt.requestFocus();
+        }
+        if (priceTxt.getText().trim().isEmpty()) {
+            errors.append("- Please enter product price.\n");
+            priceTxt.requestFocus();
+        }
+
+        if (errors.length() > 0) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Required Fields Empty");
+            alert.setContentText(errors.toString());
+
+            alert.showAndWait();
+            return false;
+        }
+        return true;
     }
 
     //CREATE PRODUCT FOR TABLE
     @FXML
     private void createProductForTable(){
-        Product product = new Product();
-        product.setProductName(productNameTxt.getText());
-        product.setDescription(descriptionTxt.getText());
-        product.setPrice(Double.parseDouble(priceTxt.getText()));
-        product.setRestaurant(restaurantDao.findRestaurantByName(restaurantNameTxt.getText()));
-        data.add(product);
-        productTable.setItems(data);
-        clearTextFieldsProduct();
-
+        if(validateProduct()){
+            Product product = new Product();
+            product.setProductName(productNameTxt.getText());
+            product.setDescription(descriptionTxt.getText());
+            product.setPrice(Double.parseDouble(priceTxt.getText()));
+            product.setRestaurant(restaurantDao.findRestaurantByName(restaurantNameTxt.getText()));
+            data.add(product);
+            productTable.setItems(data);
+            clearTextFieldsProduct();
+        }
     }
 
     @FXML
